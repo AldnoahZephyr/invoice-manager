@@ -1,0 +1,1 @@
+pyinstaller --noconfirm --noupx --windowed --icon ".\app_icon.ico" --name "InvoiceManager"  ".\main.py"

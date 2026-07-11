@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InvoiceManager 电子发票管理软件 - 用户操作手册</title>
+    <style>
+        :root {
+            --primary: #1976d2;
+            --text: #333;
+            --text-gray: #666;
+            --border: #ddd;
+            --bg: #f9f9f9;
+        }
+        * { box-sizing: border-box; }
+        body {
+            font-family: "Microsoft YaHei", "SimHei", "PingFang SC", sans-serif;
+            line-height: 1.7;
+            color: var(--text);
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #fff;
+        }
+        h1 {
+            text-align: center;
+            color: var(--primary);
+            border-bottom: 3px solid var(--primary);
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+        }
+        h2 {
+            color: var(--primary);
+            margin-top: 40px;
+            padding-left: 12px;
+            border-left: 5px solid var(--primary);
+        }
+        h3 {
+            color: #444;
+            margin-top: 28px;
+        }
+        .intro {
+            background: var(--bg);
+            padding: 20px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+        }
+        .step {
+            margin: 25px 0;
+            padding: 20px;
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+        }
+        .step-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 12px;
+        }
+        .step-desc {
+            color: var(--text-gray);
+            margin-bottom: 15px;
+        }
+        .step-img {
+            max-width: 100%;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .note {
+            background: #fffbe6;
+            border-left: 4px solid #f9a825;
+            padding: 12px 16px;
+            margin: 15px 0;
+            border-radius: 0 4px 4px 0;
+        }
+        .tip {
+            background: #e3f2fd;
+            border-left: 4px solid var(--primary);
+            padding: 12px 16px;
+            margin: 15px 0;
+            border-radius: 0 4px 4px 0;
+        }
+        ol, ul { margin: 10px 0; padding-left: 24px; }
+        li { margin: 8px 0; }
+        code {
+            background: #f0f0f0;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: Consolas, monospace;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        th, td {
+            border: 1px solid var(--border);
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background: var(--bg);
+            font-weight: bold;
+        }
+        .footer {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: var(--text-gray);
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>InvoiceManager 电子发票管理软件<br><span style="font-size:20px; color:#666;">用户操作手册</span></h1>
+
+<div class="intro">
+    <p><strong>软件名称：</strong>InvoiceManager 电子发票管理软件</p>
+    <p><strong>主要功能：</strong>电子发票（PDF）识别入库、已入库记录查询与批量管理、发票金额智能计算。支持常规文字型 PDF，也支持机票行程单等图片型 PDF 的 OCR 识别。</p>
+    <p><strong>适用对象：</strong>财务人员、行政人员及需要批量管理电子发票的办公用户。</p>
+</div>
+
+<h2>一、系统要求与启动</h2>
+<table>
+    <tr><th>项目</th><th>说明</th></tr>
+    <tr><td>操作系统</td><td>Windows 7 及以上（64 位推荐）</td></tr>
+    <tr><td>运行环境</td><td>已打包为 InvoiceManager.exe，双击即可运行</td></tr>
+    <tr><td>依赖文件</td><td>数据库文件 InvoiceManager.db 会自动生成在程序同级目录</td></tr>
+    <tr><td>推荐分辨率</td><td>1280 × 800 及以上</td></tr>
+</table>
+
+<h2>二、主界面说明</h2>
+<p>启动软件后，主界面如下图所示。顶部为标题栏和菜单栏，菜单栏中仅有一个“功能”菜单，包含三个功能入口：</p>
+<ul>
+    <li><strong>识别入库：</strong>扫描 PDF/Excel 发票文件，识别发票号码与金额并入库。对图片型 PDF（如机票行程单）会自动调用 OCR 引擎识别。</li>
+    <li><strong>入库查询：</strong>查询、编辑、删除、导出已入库的发票记录。</li>
+    <li><strong>发票计算：</strong>按目标金额智能挑选发票，用于报销凑单等场景。</li>
+</ul>
+
+<div class="step">
+    <div class="step-title">图 1：软件主界面</div>
+    <div class="step-desc">首次打开时，界面会显示三个可关闭的标签页入口，点击“功能”菜单即可打开对应页面。</div>
+    <img class="step-img" src="screenshots/01_main_overview.png" alt="软件主界面">
+</div>
+
+<h2>三、识别入库</h2>
+<p>“识别入库”用于将零散的发票文件批量识别并写入数据库。支持两种识别类型：</p>
+<ul>
+    <li><strong>电子发票：</strong>选择存放 PDF 发票的文件夹，程序自动递归扫描所有 PDF。</li>
+    <li><strong>Excel：</strong>选择包含“发票号码”和“金额”列的 Excel 文件。</li>
+</ul>
+
+<h3>步骤 1：选择识别类型和文件/文件夹</h3>
+<div class="step">
+    <div class="step-title">图 2：选择识别类型与路径</div>
+    <div class="step-desc">在“识别类型”下拉框中选择“电子发票”，点击“选择文件”按钮选择发票所在文件夹；或在路径输入框中直接粘贴文件夹路径。</div>
+    <img class="step-img" src="screenshots/02_import_scan_result.png" alt="选择识别类型与路径">
+</div>
+
+<h3>步骤 2：扫描发票</h3>
+<div class="step">
+    <div class="step-title">图 3：扫描结果展示</div>
+    <div class="step-desc">点击“扫描”按钮后，表格会列出文件夹中所有 PDF 发票的文件名称、识别出的发票号码、金额及是否在库状态。</div>
+    <ul>
+        <li>若发票号码无法识别，表格中显示“（未识别）”。</li>
+        <li>“是否在库”为“是”表示该发票号码已存在于数据库中，重复入库会被过滤。</li>
+    </ul>
+    <img class="step-img" src="screenshots/02_import_scan_result.png" alt="扫描结果展示">
+</div>
+
+<h3>步骤 3：勾选需要入库的记录</h3>
+<div class="step">
+    <div class="step-title">图 4：勾选记录</div>
+    <div class="step-desc">点击每行前面的复选框进行选择，也可使用底部工具栏的“全选”“反选”“取消选择”快速操作。工具栏会实时显示勾选数量与勾选金额合计。</div>
+    <img class="step-img" src="screenshots/03_import_checked.png" alt="勾选记录">
+</div>
+
+<div class="tip">
+    <strong>提示：</strong>表格支持点击表头排序。排序后勾选的记录不会错乱，勾选状态会跟随原始数据行。
+</div>
+
+<h3>步骤 4：确认入库</h3>
+<div class="step">
+    <div class="step-title">图 5：填写入库信息</div>
+    <div class="step-desc">点击“入库”按钮，弹出“入库确认”对话框。填写发票种类、流程编号、时间、部门、姓名、备注等字段。PDF 模式下可选择是否将原文件归档到指定文件夹。</div>
+    <img class="step-img" src="screenshots/04_import_dialog.png" alt="入库确认对话框">
+</div>
+
+<div class="note">
+    <strong>注意：</strong>只有“是否在库”为“否”的记录才会被真正入库；已入库记录会被自动跳过并提示。
+</div>
+
+<h3>步骤 5：Excel 模式入库（可选）</h3>
+<div class="step">
+    <div class="step-title">图 6：Excel 识别模式</div>
+    <div class="step-desc">在“识别类型”中选择“Excel”，点击“选择文件”选择 Excel 文件，再点击“扫描”即可读取表格中的发票数据。Excel 模式不涉及文件归档。</div>
+    <img class="step-img" src="screenshots/11_import_excel.png" alt="Excel 识别模式">
+</div>
+
+<h2>四、入库查询</h2>
+<p>“入库查询”用于查看、管理和导出已入库的发票记录。打开页面时会默认加载全部记录。</p>
+
+<h3>步骤 1：设置查询条件</h3>
+<div class="step">
+    <div class="step-title">图 7：查询结果</div>
+    <div class="step-desc">在顶部十个查询条件框中输入关键词（支持模糊查询），留空表示不限制该字段。点击“查询”按钮刷新表格。</div>
+    <img class="step-img" src="screenshots/05_query_result.png" alt="查询结果">
+</div>
+
+<div class="tip">
+    <strong>提示：</strong>常用查询条件包括发票号码、文件名、部门、姓名等，多个条件同时填写时会取“并且”关系。
+</div>
+
+<h3>步骤 2：勾选目标记录</h3>
+<div class="step">
+    <div class="step-title">图 8：全选与批量操作</div>
+    <div class="step-desc">使用复选框或底部工具栏勾选需要操作的记录。工具栏会显示当前勾选数量与勾选金额合计。</div>
+    <img class="step-img" src="screenshots/06_query_checked.png" alt="全选与批量操作">
+</div>
+
+<h3>步骤 3：批量编辑</h3>
+<div class="step">
+    <div class="step-title">图 9：批量编辑对话框</div>
+    <div class="step-desc">勾选记录后点击“批量编辑”，在弹窗中填写需要统一修改的字段，留空表示不修改。支持修改：发票种类、流程编号、时间、部门、姓名、备注。</div>
+    <img class="step-img" src="screenshots/07_query_batch_edit.png" alt="批量编辑对话框">
+</div>
+
+<h3>步骤 4：批量删除</h3>
+<div class="step">
+    <div class="step-title">删除记录</div>
+    <div class="step-desc">勾选记录后点击“批量删除”，在确认提示中点击“是”即可删除。删除后数据不可恢复，请谨慎操作。</div>
+</div>
+
+<h3>步骤 5：导出 Excel</h3>
+<div class="step">
+    <div class="step-title">导出查询结果</div>
+    <div class="step-desc">点击“导出”按钮，选择保存路径，即可将当前表格中的记录导出为 .xlsx 文件。导出的列与查询表格保持一致。</div>
+</div>
+
+<h2>五、发票计算</h2>
+<p>“发票计算”用于从一批发票中挑选出总额最接近且不小于目标金额的发票组合，常用于报销凑单。</p>
+
+<h3>步骤 1：选择发票文件夹</h3>
+<div class="step">
+    <div class="step-title">图 10：扫描发票文件夹</div>
+    <div class="step-desc">点击“选择文件夹”按钮，选择存放 PDF 发票的目录。程序会自动递归扫描，识别出的发票会显示在左侧“待选发票”表格中。</div>
+    <img class="step-img" src="screenshots/08_calc_scan.png" alt="扫描发票文件夹">
+</div>
+
+<div class="tip">
+    <strong>提示：</strong>若修改了文件夹内容，可点击“刷新”按钮重新扫描。
+</div>
+
+<h3>步骤 2：将发票移动到已选区域</h3>
+<div class="step">
+    <div class="step-title">图 11：勾选并移动发票</div>
+    <div class="step-desc">在左侧“待选发票”表格中勾选需要的发票，点击中间“→”按钮移动到右侧“已选发票”区域；如需退回，在右侧勾选后点击“←”按钮。</div>
+    <img class="step-img" src="screenshots/09_calc_move.png" alt="勾选并移动发票">
+</div>
+
+<h3>步骤 3：输入目标金额并自动计算</h3>
+<div class="step">
+    <div class="step-title">图 12：输入目标金额计算</div>
+    <div class="step-desc">在“目标金额”输入框中填写需要凑单的金额（如 3500），点击“计算”按钮。程序会使用贪心算法从所有发票中挑选最少数量的发票，使合计金额大于等于目标金额，并自动将结果移动到右侧。</div>
+    <img class="step-img" src="screenshots/10_calc_result.png" alt="输入目标金额计算">
+</div>
+
+<div class="note">
+    <strong>注意：</strong>若所有发票总额小于目标金额，程序会将全部发票移动到右侧并弹出提示。
+</div>
+
+<h2>六、常见问题</h2>
+<table>
+    <tr><th>问题</th><th>解决方法</th></tr>
+    <tr><td>扫描后发票号码显示“（未识别）”</td><td>检查 PDF 是否为正常电子发票；目前支持常见全电发票版式以及机票行程单等图片型 PDF（会自动 OCR）。如仍为图片型 PDF 识别失败，请确认 tesseract 目录及中文语言包 chi_sim.traineddata 存在。</td></tr>
+    <tr><td>Excel 扫描无结果</td><td>确认 Excel 中包含“发票号码”和“金额”两列，且列名完全匹配。</td></tr>
+    <tr><td>入库时提示“已在库”</td><td>该发票号码已存在于数据库，无需重复入库。</td></tr>
+    <tr><td>表格列宽不合适</td><td>所有菜单表格均支持自适应内容宽度，加载数据后会自动调整，也可手动拖动列边框。</td></tr>
+    <tr><td>软件闪退</td><td>避免在多线程扫描过程中频繁操作界面；如仍有问题，请检查 PDF 文件是否损坏。</td></tr>
+</table>
+
+<h2>七、数据与备份</h2>
+<ul>
+    <li>数据库文件 <code>InvoiceManager.db</code> 位于程序同级目录，建议定期备份。</li>
+    <li>归档功能仅对 PDF 模式有效，启用后原文件会被移动到指定归档目录。</li>
+    <li>导出的 Excel 文件可用于与其他系统对接或离线存档。</li>
+</ul>
+
+<div class="footer">
+    <p>InvoiceManager 用户操作手册</p>
+    <p>本手册中的截图仅为演示，实际界面以软件运行效果为准。</p>
+</div>
+
+</body>
+</html>
